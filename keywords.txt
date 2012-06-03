@@ -1,0 +1,28 @@
+LedCube	KEYWORD1
+
+getCols	KEYWORD2
+getLevels	KEYWORD2
+getRowPin	KEYWORD2
+getLevelPin	KEYWORD2
+
+light	KEYWORD2
+lightOn	KEYWORD2
+lightOff	KEYWORD2
+lightPulse	KEYWORD2
+lightSequence	KEYWORD2
+lightLevel	KEYWORD2
+lightRow	KEYWORD2
+lightPlane	KEYWORD2
+lightColumn	KEYWORD2
+lightDrop	KEYWORD2
+lightPerimeter	KEYWORD2
+randomLight	KEYWORD2
+randomColumn	KEYWORD2
+
+enableBuffer	KEYWORD2
+invertBuffer	KEYWORD2
+clearBuffer	KEYWORD2
+fillBuffer	KEYWORD2
+getBufferAt	KEYWORD2
+drawBuffer	KEYWORD2
+
