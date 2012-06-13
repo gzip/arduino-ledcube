@@ -13,6 +13,12 @@
 #include "WProgram.h"
 #endif
 
+struct cubeFrame {
+    unsigned int size;
+    unsigned int delay;
+    byte *sequence;
+};
+
 class LedCube
 {
   public:
@@ -36,6 +42,11 @@ class LedCube
     void lightPerimeter(byte level, byte rotations, unsigned int wait = 50);
     void randomLight(byte numLights, unsigned int wait = 50);
     void randomColumn(byte numColumns = 1, unsigned int wait =  50);
+    void lightsOut(unsigned int wait =  5);
+    
+    cubeFrame* createFrame(byte sequence[], unsigned int length, unsigned int delay);
+    void destroyFrame(cubeFrame* frame);
+    void lightFrames(cubeFrame* frames[], unsigned int length);
     
     void enableBuffer(boolean enable = true);
     void invertBuffer(boolean invert = true);
@@ -43,8 +54,6 @@ class LedCube
     void fillBuffer();
     void drawBuffer(unsigned int wait = 1);
     byte getBufferAt(byte lv, byte col);
-    
-    void lightsOut(unsigned int wait =  5);
     
   private:
     byte cols;

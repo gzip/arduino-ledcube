@@ -14,13 +14,51 @@ byte colPins[COLS] = {2,3,4,5,6,7,8,9,10};
 
 LedCube cube(SIZE, levelPins, colPins);
 
+//#define DEBUG
+#ifdef DEBUG
+#include <memdebug.h>
+void showmem(const char label[] = "")
+{
+  char buffer[100];
+ 
+  sprintf(buffer,"%s: %04u %04u %04u : used/free",
+      label,
+      getMemoryUsed(),
+      getFreeMemory()
+    );
+ 
+  Serial.println(buffer);
+}
+#endif
+
 void setup ()
 {
+#ifdef DEBUG
+    Serial.begin(9600);
+#endif
 }
 
 void loop ()
 {
     delay(10);
+    
+#ifdef DEBUG
+    showmem("start");
+#endif
+    cubeFrame* f[] = {
+        cube.createFrame((byte[]) {0,6, 1,6, 2,6}, 6, 80),
+        cube.createFrame((byte[]) {0,7, 1,7, 2,7}, 6, 70),
+        cube.createFrame((byte[]) {0,8, 1,8, 2,8}, 6, 60),
+        cube.createFrame((byte[]) {0,5, 1,5, 2,5}, 6, 50),
+        cube.createFrame((byte[]) {0,2, 1,2, 2,2}, 6, 40),
+        cube.createFrame((byte[]) {0,1, 1,1, 2,1}, 6, 30),
+        cube.createFrame((byte[]) {0,0, 1,0, 2,0}, 6, 20),
+        cube.createFrame((byte[]) {0,3, 1,3, 2,3}, 6, 10)
+    };
+#ifdef DEBUG
+    showmem("before free");
+#endif
+    cube.lightFrames(f, 8);
     
     // light each light one at a time
     for(byte level=0; level<cube.getLevels(); level++)
@@ -153,22 +191,6 @@ void loop ()
     }
     
     // turn off one light at a time
-    cube.enableBuffer();
-    cube.fillBuffer();
-    cube.drawBuffer(25);
-    for(byte w=0, l, c, max = cube.getNumLights(); w<max; )
-    {
-        // lower bound is inclusive, upper is exclusive
-        l = random(0, cube.getLevels());
-        c = random(0, cube.getCols());
-        
-        if(cube.getBufferAt(l,c) == HIGH)
-        {
-            cube.lightOff(l,c);
-            cube.drawBuffer(5);
-            w++;
-        }
-    }
-    cube.enableBuffer(false);
+    cube.lightsOut();
 }
 

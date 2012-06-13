@@ -7,14 +7,14 @@
 #include "LedCube.h"
 
 LedCube::LedCube(byte size, byte lp[], byte cp[]) :
-    levels(size), cols(size*size), num(pow(size, size)),
+    levels(size), cols(size*size), num(size*size*size),
     bufferEnabled(false), bufferInverted(false)
 {
     randomSeed(analogRead(0));
     
     // allocate memory for dynamic members
-    buffer = (byte**) malloc(levels * sizeof(byte *));
-    levelPins = (byte*) malloc(levels * sizeof(byte)); //allocate(levelPins, levels);
+    buffer = (byte**) malloc(levels * sizeof(byte*));
+    levelPins = (byte*) malloc(levels * sizeof(byte));
     colPins = (byte*) malloc(cols * sizeof(byte));
     
     // configure level pins and finish allocation for buffer
@@ -47,9 +47,11 @@ LedCube::~LedCube()
     free(colPins);
 }
 /*
-void LedCube::allocate (byte* array, byte size)
+void LedCube::allocate (byte size)
 {
-    array = (byte*) malloc(size * sizeof(byte));
+    // todo: switch/case 'byte', 'byte[]'?
+    byte* array = (byte*) malloc(size * sizeof(byte));
+    return array;
 }
 */
 // low level methods, zero based
@@ -132,6 +134,33 @@ void LedCube::lightSequence(byte seq[], byte length, unsigned int time, byte gap
         } 
     }
     //Serial.println('}');
+}
+
+cubeFrame* LedCube::createFrame(byte sequence[], unsigned int size, unsigned int delay)
+{
+    // allocate memory which will be reclaimed in lightFrames
+    struct cubeFrame *f = (cubeFrame*) malloc(sizeof(struct cubeFrame));
+    f->sequence = (byte*) malloc(sizeof(byte) * size);
+    memcpy((void*) f->sequence , (void*) sequence, sizeof(byte) * size);
+    f->size = size;
+    f->delay = delay;
+    return f;
+}
+
+void LedCube::destroyFrame(cubeFrame* frame)
+{
+    free(frame->sequence);
+    free(frame);
+}
+
+void LedCube::lightFrames(cubeFrame* frames[], unsigned int length)
+{
+    for(byte f=0; f<length; f++)
+    {
+        lightSequence(frames[f]->sequence, frames[f]->size, frames[f]->delay);
+        // reclaim memory allocated in createFrame to prevent a leak
+        destroyFrame(frames[f]);
+    }
 }
 
 void LedCube::lightLevel(byte lv, unsigned int delay)
