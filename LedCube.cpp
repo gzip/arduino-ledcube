@@ -4,6 +4,8 @@
     MIT License. See accompanying LICENSE file for terms.
 */
 
+#include <new.h>
+#include "newfix.h"
 #include "LedCube.h"
 
 LedCube::LedCube(byte size, byte lp[], byte cp[]) :
@@ -13,9 +15,9 @@ LedCube::LedCube(byte size, byte lp[], byte cp[]) :
     randomSeed(analogRead(0));
     
     // allocate memory for dynamic members
-    buffer = (byte**) malloc(levels * sizeof(byte*));
-    levelPins = (byte*) malloc(levels * sizeof(byte));
-    colPins = (byte*) malloc(cols * sizeof(byte));
+    buffer = new byte*[levels];
+    levelPins = new byte[levels];
+    colPins = new byte[cols];
     
     // configure level pins and finish allocation for buffer
     for (byte i = 0; i < levels; i++)
@@ -23,7 +25,7 @@ LedCube::LedCube(byte size, byte lp[], byte cp[]) :
         levelPins[i] = lp[i];
         pinMode(levelPins[i], OUTPUT);
         
-        buffer[i] = (byte*) malloc(cols * sizeof(byte));
+        buffer[i] = new byte[cols];
     }
     
     // configure column pins
@@ -41,19 +43,15 @@ LedCube::LedCube(byte size, byte lp[], byte cp[]) :
 // destructor frees dynamically allocated memory
 LedCube::~LedCube()
 {
-    for(byte i = 0; i < levels; i++){ free(buffer[i]); }
-    free(buffer);
-    free(levelPins);
-    free(colPins);
+    for (byte i = 0; i < levels; i++)
+    {
+        delete buffer[i];
+    }
+    delete buffer;
+    delete levelPins;
+    delete colPins;
 }
-/*
-void LedCube::allocate (byte size)
-{
-    // todo: switch/case 'byte', 'byte[]'?
-    byte* array = (byte*) malloc(size * sizeof(byte));
-    return array;
-}
-*/
+
 // low level methods, zero based
 
 void LedCube::light(byte lv, byte col, byte val)
