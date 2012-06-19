@@ -56,8 +56,8 @@ class LedCube
     byte getBufferAt(byte lv, byte col);
     
   private:
-    byte cols;
     byte levels;
+    byte cols;
     byte num;
     byte **buffer;
     byte *colPins;
@@ -65,7 +65,6 @@ class LedCube
     boolean bufferEnabled;
     boolean bufferInverted;
     
-    //void allocate (byte* array, byte size);
     void setBuffer (byte val);
 };
 
