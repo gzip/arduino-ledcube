@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<title>LED Cube Pattern Generation Tool</title>
+
+<link type="text/css" href="assets/jquery-ui-1.css" rel="stylesheet">
+<link type="text/css" href="assets/prog.css" rel="stylesheet">
+<script type="text/javascript" src="assets/jquery-1.js"></script>
+<script type="text/javascript" src="assets/jquery-ui-1.js"></script>
+<script type="text/javascript" src="assets/json2.js"></script>
+<script type="text/javascript" src="assets/prog.js"></script>
+</head>
+<body>
+    <div id="divWarning" style="z-index: 1000; width: 100%; height: 100%; background: white;">
+        <h1>You appear to have Javascript disabled.  To use this tool, Javascript and CSS must be enabled.</h1>
+    </div>
+    <div id="divHasJs" style="display: none;">
+    <div id="divMenu" style="display: inline-block;">
+        <input id="btnFileMnu" type="button" value="File" onclick="javascript:showMenu('mnuFile');" />
+        <input id="btnFrameMnu" type="button" value="Frame" onclick="javascript:showMenu('mnuFrame');"/>
+        <input id="btnViewMnu" type="button" value="View" onclick="javascript:showMenu('mnuView');"/>
+        <span id="mnuFile" class="submenu">
+            <input id="btnShowNew" type="button" value="New..." class="btnDisableOnPlayback" onclick="javascript:showDlg('dlgNew');" />
+            <input id="btnGenerateCode" type="button" value="To Code..." class="btnDisableOnPlayback" onclick="javascript:toCode();" />
+            <input id="btnLoadObj" type="button" value="Load..." class="btnDisableOnPlayback" onclick="javascript:showDlg('dlgLoadObj');" />
+            <input id="btnSaveObj" type="button" value="Save..." class="btnDisableOnPlayback" onclick="javascript:toObj();" />
+        </span>
+        <span id="mnuFrame" class="submenu">
+            <input id="btnClearAll" type="button" value="Clear Frame" class="btnDisableOnPlayback" onclick="javascript:setFrame(0);" />
+            <input id="btnFillAll" type="button" value="Fill Frame" class="btnDisableOnPlayback" onclick="javascript:setFrame(1);" />
+        </span>
+        <span id="mnuView" class="submenu">
+            <input id="btnToggPreview" type="button" value="Toggle Preview" onclick="javascript:previewToggle();" />
+            <input id="btnAbout" type="button" value="About..." class="btnDisableOnPlayback" onclick="javascript:showDlg('dlgAbout');" />
+        </span>
+    </div>
+    <hr>
+    <div id="divMain">
+        <div id="divGrid">
+            <!-- should get filled in later by refreshUI() and updated by loadCurFrame() -->
+        </div>
+    </div>
+    <div id="dlgFrameList" style="font-size: 50%;">
+        <div id="divFrameContainer">
+            <ol id="lstFrames" >
+                <!-- should get filled in later by updateFrameList() -->
+            </ol>
+        </div>
+        <div style="float: left;">
+            <input id="btnPrevFrame" type="button" value="<<" class="btnDisableOnPlayback" onclick="javascript:prevFrame();"/>
+            <input id="btnPlay" type="button" value="Play" onclick="javascript:playToggle();"/>
+            <input id="btnNextFrame" type="button" value=">>" class="btnDisableOnPlayback" onclick="javascript:nextFrame();"/>
+        </div>
+        <div style="float: right;">
+            <input id="btnInsertFrame" type="button" value="Insert" class="btnDisableOnPlayback" onclick="javascript:insertFrame();" />
+            <input id="btnDeleteFrame" type="button" value="Delete" class="btnDisableOnPlayback" onclick="javascript:deleteFrame();" />
+        </div>
+        <div style="text-align: center;">
+            Current frame delay:<input id="txtDuration" type="text" style="width: 50px;">
+            <input id="btnApplyDuration" type="button" value="Apply" class="btnDisableOnPlayback" onclick="javascript:editDuration();" />
+        </div>
+    </div>
+    <div id="dlgNew">
+        <label for="txtWidth">Width:</label><input id="txtWidth" type="text" value="3"><br />
+        <label for="txtHeight">Height:</label><input id="txtHeight" type="text" value="3"><br />
+        <label for="txtDepth">Depth:</label><input id="txtDepth" type="text" value="3"><br />
+        <hr>
+        <input id="btnNew" type="button" value="Create" class="btnDisableOnPlayback" onclick="javascript:createNew();" />
+    </div>
+    <div id="dlgGenerateCode" style="font-size: 50%;">
+        <h4>This code can be used within the firmware for your LED cube.</h4>
+        <textarea id="genCode" cols="80" rows="15"></textarea>
+    </div>
+    <div id="dlgGenerateCodeAs" style="font-size: 75%;">
+        <p>Depending on the kind of firmware you are using, your data could be stored in one of two formats.
+        Height-depth-width order typically has struct elements with names like &quot;TopFrontRow&quot;, whereas
+        depth-height-width order has struct elements with names like &quot;topRow0&quot;.  Please specify which format to use:</p>
+        <hr>
+        <input id="btnSaveHeightFirst" type="button" value="Height-depth-width order" class="btnDisableOnPlayback" onclick="javascript:toCode(false);" />
+        <br>
+        <input id="btnSaveDepthFirst" type="button" value="Depth-height-width order" class="btnDisableOnPlayback" onclick="javascript:toCode(true);"/>
+    </div>
+    <div id="dlgGenerateObj" style="font-size: 50%;">
+        <h4>Save the box's contents as a text file.  You can load it to continue your work later.</h4>
+        <textarea id="genObj" cols="80" rows="15"></textarea>
+    </div>    
+    <div id="dlgLoadObj" style="font-size: 50%;">
+        <h4>Please provide saved serialized object.</h4>
+        <textarea id="loadObj" cols="80" rows="13"></textarea>
+        <input id="btnLoad" type="button" value="Load" class="btnDisableOnPlayback" onclick="javascript:fromObj();"/>
+    </div>
+    <div id="dlgAbout" style="font-size: 75%;">
+        <h3>LED Cube Pattern Generation Tool</h3> 
+        <h4>Version 0.02</h4>
+        <h4>Author: Andrew Stock &lt;<a href="mailto:totally@funoninter.net">totally@funoninter.net</a>&gt;</h4>
+        Feedback and enhancement suggestions are greatly appreciated.
+        <hr>
+        <p>This work (index.html and frame.js) is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License. To view a copy of this license, visit <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">http://creativecommons.org/licenses/by-sa/3.0/</a> or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.</p>
+    </div>
+    <div id="dlgPreview" style="text-align: center;">
+        <canvas id="cvsPreview" width="220" height="200">
+        Sorry, your browser does not currently support the &lt;canvas&gt; element.  Therefore, you will be unable to use the preview functionality.
+        </canvas>
+    </div>
+    </div>
+</body>
+</html>

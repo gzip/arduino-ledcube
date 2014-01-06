@@ -1,6 +1,6 @@
 /*
     ledcube.pde - Example sketch for controlling an LED cube.
-    Created by Gamaiel Zavala (gzip), 2009-2012
+    Created by Gamaiel Zavala (gzip), 2009-2014
     MIT License. See accompanying LICENSE file for terms.
 */
 
@@ -45,6 +45,7 @@ void loop ()
 #ifdef DEBUG
     showmem("start");
 #endif
+    // paste UI output here (https://rawgithub.com/gzip/arduino-ledcube/master/ui/index.html)
     cubeFrame* f[] = {
         cube.createFrame((byte[]) {0,6, 1,6, 2,6}, 6, 80),
         cube.createFrame((byte[]) {0,7, 1,7, 2,7}, 6, 70),
