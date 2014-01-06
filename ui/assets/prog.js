@@ -372,7 +372,7 @@ function toCode()
     
     // finish code
     codeString = "    cubeFrame* f[] = {\n        " + frames.join(",\n        ") + "\n    };\n";
-    codeString += "    cube.lightFrames(frames, " + frames.length + ");";
+    codeString += "    cube.lightFrames(f, " + frames.length + ");";
     
     // And set for the textarea!
     $("#genCode").val(codeString);
