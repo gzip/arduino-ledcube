@@ -4,7 +4,7 @@ A simple UI that can generate custom animations for the LED Cube.
 
 ## Running
 
-Download the code and open `index.html` in your browser or [run it online](https://rawgithub.com/gzip/arduino-led-cube/master/ui/).
+Download the code and open `index.html` in your browser or [run it online](https://rawgithub.com/gzip/arduino-ledcube/master/ui/index.html).
 
 ## Attribution
 
