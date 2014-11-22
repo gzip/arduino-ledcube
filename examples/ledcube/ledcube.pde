@@ -21,7 +21,7 @@ void showmem(const char label[] = "")
 {
   char buffer[100];
  
-  sprintf(buffer,"%s: %04u %04u %04u : used/free",
+  sprintf(buffer,"%s: %04u %04u : used/free",
       label,
       getMemoryUsed(),
       getFreeMemory()
@@ -47,14 +47,14 @@ void loop ()
 #endif
     // paste UI output here (https://rawgithub.com/gzip/arduino-ledcube/master/ui/index.html)
     cubeFrame* f[] = {
-        cube.createFrame((byte[]) {0,6, 1,6, 2,6}, 6, 80),
-        cube.createFrame((byte[]) {0,7, 1,7, 2,7}, 6, 70),
-        cube.createFrame((byte[]) {0,8, 1,8, 2,8}, 6, 60),
-        cube.createFrame((byte[]) {0,5, 1,5, 2,5}, 6, 50),
-        cube.createFrame((byte[]) {0,2, 1,2, 2,2}, 6, 40),
-        cube.createFrame((byte[]) {0,1, 1,1, 2,1}, 6, 30),
-        cube.createFrame((byte[]) {0,0, 1,0, 2,0}, 6, 20),
-        cube.createFrame((byte[]) {0,3, 1,3, 2,3}, 6, 10)
+        cube.createFrame((const byte[]) {0,6, 1,6, 2,6}, 6, 80),
+        cube.createFrame((const byte[]) {0,7, 1,7, 2,7}, 6, 70),
+        cube.createFrame((const byte[]) {0,8, 1,8, 2,8}, 6, 60),
+        cube.createFrame((const byte[]) {0,5, 1,5, 2,5}, 6, 50),
+        cube.createFrame((const byte[]) {0,2, 1,2, 2,2}, 6, 40),
+        cube.createFrame((const byte[]) {0,1, 1,1, 2,1}, 6, 30),
+        cube.createFrame((const byte[]) {0,0, 1,0, 2,0}, 6, 20),
+        cube.createFrame((const byte[]) {0,3, 1,3, 2,3}, 6, 10)
     };
 #ifdef DEBUG
     showmem("before free");

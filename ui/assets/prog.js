@@ -95,7 +95,7 @@ Frame.prototype.toCode = function()
         }
     }
     
-    return 'cube.createFrame((byte[]) {' + str + '}, ' + count + ', ' + this.duration + ')';
+    return 'cube.createFrame((const byte[]) {' + str + '}, ' + count + ', ' + this.duration + ')';
 }
 
 // This is a wrapper for all of our globals (such as dimensions and the frame

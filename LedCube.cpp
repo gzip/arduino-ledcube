@@ -134,7 +134,7 @@ void LedCube::lightSequence(byte seq[], byte length, unsigned int time, byte gap
     //Serial.println('}');
 }
 
-cubeFrame* LedCube::createFrame(byte sequence[], unsigned int size, unsigned int delay)
+cubeFrame* LedCube::createFrame(const byte sequence[], unsigned int size, unsigned int delay)
 {
     // allocate memory which will be reclaimed in lightFrames
     struct cubeFrame *f = (cubeFrame*) malloc(sizeof(struct cubeFrame));

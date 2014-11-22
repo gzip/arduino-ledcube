@@ -44,7 +44,7 @@ class LedCube
     void randomColumn(byte numColumns = 1, unsigned int wait =  50);
     void lightsOut(unsigned int wait =  5);
     
-    cubeFrame* createFrame(byte sequence[], unsigned int length, unsigned int delay);
+    cubeFrame* createFrame(const byte sequence[], unsigned int length, unsigned int delay);
     void destroyFrame(cubeFrame* frame);
     void lightFrames(cubeFrame* frames[], unsigned int length);
     
